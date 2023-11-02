@@ -6,6 +6,15 @@
 
 Custom user avatar widget, waves-like rings around, badges, status points, and many more customizations.
 
+## Preview
+
+![RPReplay_Final1698906431](https://github.com/deam91/avatar_rings/assets/11580629/0b3c0ffc-01ff-4d7f-a6e5-badba8745d6e)
+![RPReplay_Final1698906479](https://github.com/deam91/avatar_rings/assets/11580629/588fa0fa-3970-404e-9c43-1b9fa8dbb07b)
+![RPReplay_Final1698906588](https://github.com/deam91/avatar_rings/assets/11580629/0654696e-e1a4-4b0e-882a-c7f1b158252b)
+![RPReplay_Final1698906656](https://github.com/deam91/avatar_rings/assets/11580629/d8bb7e61-6649-444b-9b34-cf45ea1b5528)
+![RPReplay_Final1698906710](https://github.com/deam91/avatar_rings/assets/11580629/b0b8f9bc-e716-4e6f-b8b1-f8676d4300f5)
+
+
 ## Installation 💻
 
 **❗ In order to start using Avatar Rings you must have the [Flutter SDK][flutter_install_link] installed on your machine.**
@@ -13,7 +22,26 @@ Custom user avatar widget, waves-like rings around, badges, status points, and m
 Install via `flutter pub add`:
 
 ```sh
-dart pub add avatar_rings
+flutter pub add avatar_rings
+```
+
+## Usage
+
+```dart
+AvatarRings(
+  rings: 2, // The number of rings. Defaults to 1.
+  radius: 70, // The radius of the entire rings painter. Defaults to 80.
+  spaceBetweenRings: 1, // The space between each ring. Defaults to 1.
+  fromPeriod: 250, // The start period value. Used to generate a random value starting from this value. Defaults to 150.
+  toPeriod: 350, // The end period value. Used to generate a random value ending in this value. Defaults to 200.
+  ringsColor: Colors.red, // The color of the rings. Defaults to [Colors.lightBlue].
+  ringsColorOpacity: .3, // The opacity of the rings color. Defaults to 0.4.
+  shadowColor: Colors.red, // The color of the shadow. Defaults to [Colors.lightBlue].
+  shadowColorOpacity: .45, // The opacity of the shadow color. Defaults to 0.4.
+  child: Image.asset(
+    'assets/person.jpeg',
+  ),
+),
 ```
 
 ---
