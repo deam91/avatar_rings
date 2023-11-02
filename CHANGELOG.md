@@ -1,3 +1,11 @@
+# 0.1.1
+
+### Features
+
+- add supported/tested platforms
+- allow publishing to pub.dev
+- add avatar ring previews to the README file
+
 # 0.1.0+12
 
 ### Features
