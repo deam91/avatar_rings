@@ -108,8 +108,8 @@ class AvatarRings extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(
                     color: shadowColor.withOpacity(shadowColorOpacity),
-                    spreadRadius: 10,
-                    blurRadius: 10,
+                    spreadRadius: padding ?? rings.toDouble(),
+                    blurRadius: padding ?? rings.toDouble(),
                     offset: const Offset(
                       0,
                       1,
