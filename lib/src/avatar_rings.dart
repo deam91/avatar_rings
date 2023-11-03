@@ -33,6 +33,7 @@ class AvatarRings extends StatelessWidget {
     this.ringsColorOpacity = .4,
     this.shadowColor = Colors.lightBlue,
     this.shadowColorOpacity = .4,
+    this.padding,
     super.key,
   })  : assert(
           radius > rings * spaceBetweenRings,
@@ -63,6 +64,9 @@ class AvatarRings extends StatelessWidget {
   /// The radius of the entire rings painter. Defaults to 80.
   final double radius;
 
+  /// The padding for the child widget. Defaults to a calculation based on the amount of rings.
+  final double? padding;
+
   /// The start period value. Used to generate a random value starting from [fromPeriod]. Defaults to 150.
   final double fromPeriod;
 
@@ -86,7 +90,7 @@ class AvatarRings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final childPadding = rings > 8 ? rings * 1.1 : 10;
+    final childPadding = padding ?? (rings > 8 ? rings * 1.1 : 10);
     return SizedBox.square(
       key: const Key('avatar_rings_sizedbox'),
       dimension: radius * 2,
@@ -130,7 +134,7 @@ class AvatarRings extends StatelessWidget {
           Center(
             key: const Key('avatar_rings_child'),
             child: Padding(
-              padding: EdgeInsets.all(childPadding.toDouble()),
+              padding: EdgeInsets.all(childPadding),
               child: ClipOval(
                 child: DecoratedBox(
                   decoration: const BoxDecoration(shape: BoxShape.circle),
