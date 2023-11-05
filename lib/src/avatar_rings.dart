@@ -24,6 +24,7 @@ class AvatarRings extends StatelessWidget {
   ///
   const AvatarRings({
     required this.child,
+    this.showRings = true,
     this.rings = 4,
     this.radius = 80,
     this.spaceBetweenRings = 1,
@@ -33,7 +34,12 @@ class AvatarRings extends StatelessWidget {
     this.ringsColorOpacity = .4,
     this.shadowColor = Colors.lightBlue,
     this.shadowColorOpacity = .4,
+    this.showStatusPoint = false,
+    this.statusPointColor = Colors.green,
     this.padding,
+    this.badgeText,
+    this.badgeColor,
+    this.border,
     super.key,
   })  : assert(
           radius > rings * spaceBetweenRings,
@@ -55,14 +61,32 @@ class AvatarRings extends StatelessWidget {
           'The toPeriod must be bigger or equal to fromPeriod',
         );
 
-  /// The child widget for the rings avatar
+  /// The child widget for the rings avatar.
   final Widget child;
+
+  /// The badge text widget to show as a notification.
+  final Widget? badgeText;
+
+  /// The badge color.
+  final Color? badgeColor;
+
+  /// Hide or show the rings. Defaults to true.
+  final bool showRings;
 
   /// The number of rings. Defaults to 1.
   final int rings;
 
+  /// Show the status point at the bottom right corner. Defaults to false.
+  final bool showStatusPoint;
+
+  /// The status point color. Defaults to [Colors.green].
+  final Color? statusPointColor;
+
   /// The radius of the entire rings painter. Defaults to 80.
   final double radius;
+
+  /// The border for the child.
+  final Border? border;
 
   /// The padding for the child widget. Defaults to a calculation based on the amount of rings.
   final double? padding;
@@ -90,10 +114,11 @@ class AvatarRings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final childPadding = padding ?? (rings > 8 ? rings * 1.1 : 10);
-    return SizedBox.square(
+    final childPadding = padding ?? radius / 10;
+    return SizedBox(
       key: const Key('avatar_rings_sizedbox'),
-      dimension: radius * 2,
+      height: radius * 2,
+      width: radius * 2,
       child: Stack(
         key: const Key('avatar_rings_stack'),
         children: [
@@ -108,8 +133,12 @@ class AvatarRings extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(
                     color: shadowColor.withOpacity(shadowColorOpacity),
-                    spreadRadius: padding ?? rings.toDouble(),
-                    blurRadius: padding ?? rings.toDouble(),
+                    spreadRadius: padding != null
+                        ? padding!
+                        : (showRings ? rings.toDouble() * 2 : 10),
+                    blurRadius: padding != null
+                        ? padding! * 2
+                        : (showRings ? rings.toDouble() * 2 : 10),
                     offset: const Offset(
                       0,
                       1,
@@ -119,26 +148,72 @@ class AvatarRings extends StatelessWidget {
               ),
             ),
           ),
-          Center(
-            key: const Key('avatar_rings_rings'),
-            child: AnimatedRings(
-              rings: rings,
-              radius: radius,
-              ringsColor: ringsColor,
-              ringsColorOpacity: ringsColorOpacity,
-              fromPeriod: fromPeriod,
-              toPeriod: toPeriod,
-              spaceBetweenRings: spaceBetweenRings,
+          if (showRings)
+            Center(
+              key: const Key('avatar_rings_rings'),
+              child: AnimatedRings(
+                rings: rings,
+                radius: radius,
+                ringsColor: ringsColor,
+                ringsColorOpacity: ringsColorOpacity,
+                fromPeriod: fromPeriod,
+                toPeriod: toPeriod,
+                spaceBetweenRings: spaceBetweenRings,
+              ),
             ),
-          ),
           Center(
             key: const Key('avatar_rings_child'),
             child: Padding(
-              padding: EdgeInsets.all(childPadding),
-              child: ClipOval(
-                child: DecoratedBox(
-                  decoration: const BoxDecoration(shape: BoxShape.circle),
-                  child: child,
+              padding: EdgeInsets.all(showRings ? childPadding : 0),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: border,
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(showRings ? 5 : 0),
+                  child: Stack(
+                    children: [
+                      ClipOval(
+                        child: child,
+                      ),
+                      if (radius / 2.5 > 10 && showStatusPoint)
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: DecoratedBox(
+                            decoration: ShapeDecoration(
+                              color: statusPointColor,
+                              shape: const StadiumBorder(),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(radius / 8),
+                            ),
+                          ),
+                        ),
+                      if (badgeText != null)
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          child: DecoratedBox(
+                            decoration: ShapeDecoration(
+                              color: badgeColor ?? Colors.red,
+                              shape: const StadiumBorder(),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 2,
+                              ),
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: radius > 30 ? badgeText : null,
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
               ),
             ),

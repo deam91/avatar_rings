@@ -6,6 +6,23 @@ import 'package:flutter/material.dart';
 
 /// The widget used to animate and style the rings.
 class AnimatedRings extends StatefulWidget {
+  /// The constructor for the [AnimatedRings] class
+  ///
+  /// Accepts the amount of [rings], the [radius] of
+  /// the entire rings painter, a [spaceBetweenRings] space between each ring,
+  /// a [fromPeriod] for the start period value, a [toPeriod] for the end
+  /// period value, a [ringsColor] for the color of the rings, and a
+  /// [ringsColorOpacity] for the opacity for the rings.
+  ///
+  /// - The [radius] must be bigger than the [rings] multiplied with the
+  /// [spaceBetweenRings].
+  ///
+  /// - The [rings] must less/equal to 16 to keep performance
+  ///
+  /// - The [fromPeriod] and [toPeriod] values must be between 10 and 400
+  ///
+  /// - The [toPeriod] must be bigger or equal to [fromPeriod]
+  ///
   const AnimatedRings({
     required this.rings,
     required this.radius,
@@ -56,14 +73,14 @@ class _AnimatedRingsState extends State<AnimatedRings>
   List<Wave> _buildWaves() {
     final waves = <Wave>[];
     for (var i = 0; i < 5; i++) {
-      final amplitude = Random().nextInt(4);
+      final amplitude = Random().nextDouble() * 1 + (0.05 * i);
       final period =
           Random().nextInt((widget.toPeriod - widget.fromPeriod).toInt()) +
               widget.fromPeriod;
       final phase = Random().nextDouble() * 2 * pi;
       waves.add(
         Wave(
-          amplitude: amplitude.toDouble(),
+          amplitude: amplitude,
           period: period,
           phase: phase,
         ),

@@ -54,12 +54,12 @@ class RingPainter extends CustomPainter {
     var previousOffset = Offset.zero;
     var savedRadius = radius;
     canvas.save();
-    for (final list in rings) {
+    for (var l = 0; l < rings.length; l++) {
       for (var i = -smallDegree; i < pi * 2; i += smallDegree) {
-        final x = savedRadius * cos(i);
-        var y = savedRadius * sin(i);
+        final x = savedRadius * cos(i + degreeToRadian(rotation!) * l);
+        var y = savedRadius * sin(i + degreeToRadian(rotation!) * l);
 
-        for (final wave in list) {
+        for (final wave in rings[l]) {
           y += wave.evaluateSin(x, controller.value * savedRadius);
         }
         final offset = Offset(
@@ -79,9 +79,6 @@ class RingPainter extends CustomPainter {
       }
       savedRadius = savedRadius - ringSpace;
       previousOffset = Offset.zero;
-    }
-    if (rotation != null) {
-      canvas.rotate(degreeToRadian(rotation!));
     }
     canvas.restore();
   }
